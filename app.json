@@ -1,0 +1,10 @@
+{
+  "expo": {
+    "scheme": "acme",
+    "web": {
+      "bundler": "metro"
+    },
+    "name": "meal_management_client_android",
+    "slug": "meal_management_client_android"
+  }
+}
