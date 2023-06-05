@@ -18,17 +18,11 @@ const Home = () => {
 
   return (
     <SafeAreaView>
-      <Stack.Screen
-        options={{
-          headerStyle : {backgroundColor : 'green'},
-          headerShadowVisible : false,
-          headerTitle : "Home"
-        }}
-      />
+      
       <ScrollView>
         <View>
           <Text>{loggedInUser.email}</Text>
-          <Text>{user?.email}</Text>
+          <Text>{user[0]?.username}</Text>
         </View>
       </ScrollView>
     </SafeAreaView>
