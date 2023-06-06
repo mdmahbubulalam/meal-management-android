@@ -1,10 +1,15 @@
 import { View, Text, TouchableOpacity, FlatList } from 'react-native'
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { useRouter } from 'expo-router';
+import { UserContext } from '../_layout';
 
 const month = () => {
   const router = useRouter();
   const [allMonth, setAllMonth] = useState([])
+  const [loggedInUser] = useContext(UserContext);
+  const userEmail = loggedInUser.email
+
+  console.log('email', userEmail)
 
   const url = `https://meal-management-server.onrender.com/api/months/allMonths`
   useEffect(()=>{
@@ -25,7 +30,7 @@ const month = () => {
                   </View>
               </TouchableOpacity>
             )}
-            keyExtractor={(item) => item.id}
+            keyExtractor={(item) => item._id}
             contentContainerStyle={{ columnGap: 16}}
           /> 
     </View>

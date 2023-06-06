@@ -4,26 +4,26 @@ import { UserContext } from '../_layout'
 import { Stack } from 'expo-router';
 
 const Home = () => {
-  const [loggedInUser] = useContext(UserContext);
-  const [user, setUser] = useState([])
-
-  const url = `https://meal-management-server.onrender.com/api/users/allUsers`
-  useEffect(()=>{
-    fetch(url)
-      .then(res => res.json())
-      .then(data =>{
-        setUser(data.filter(user => user.email === loggedInUser.email))
-      }) 
-  },[])
+  const [loggedInUser] = useContext(UserContext)
+  const userEmail = loggedInUser.email
+ 
+console.log('sss',userEmail)
 
   return (
     <SafeAreaView>
       
       <ScrollView>
-        <View>
-          <Text>{loggedInUser.email}</Text>
-          <Text>{user[0]?.username}</Text>
-        </View>
+        
+         {
+          userEmail && 
+          
+            <View>
+              <Text>
+             asaSasASas
+              </Text>
+            </View>
+          
+         }
       </ScrollView>
     </SafeAreaView>
     

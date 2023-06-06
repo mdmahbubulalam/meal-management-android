@@ -5,9 +5,9 @@ import { View, TextInput, Button, StyleSheet } from 'react-native';
 
 const SignUp = () => {
   const router = useRouter()
-  const [username, setUserName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [username, setUserName] = useState(null);
+  const [email, setEmail] = useState(null);
+  const [password, setPassword] = useState(null);
   
 
   

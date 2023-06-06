@@ -11,7 +11,7 @@ const Meal = () => {
   return (
     <View>
       <Link href={{ pathname: "./expense", params: { monthName: monthName } }}>Add Expense</Link>
-      <Link href={{ pathname: "./mealCount", params: { monthName: monthName } }}>Add Todays Meal</Link>
+      <Link href={{ pathname: "./meals", params: { monthName: monthName } }}>Add Todays Meal</Link>
     </View>
   )
 }

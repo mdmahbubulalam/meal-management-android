@@ -29,7 +29,6 @@ const SignIn = () => {
           email:email
         }
         setLoggedInUser(userEmail)
-        console.log('sasasd',email)
         console.log('User signed in successfully!');
         router.push(`/home`);
         // Additional actions after successful sign-in, such as navigating to another screen
