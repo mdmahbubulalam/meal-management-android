@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity, FlatList } from 'react-native'
+import { View, Text, TouchableOpacity, FlatList, ScrollView } from 'react-native'
 import React, { useContext, useEffect, useState } from 'react'
 import { useRouter } from 'expo-router';
 import { UserContext } from '../_layout';

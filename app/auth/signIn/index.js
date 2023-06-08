@@ -1,6 +1,6 @@
-import { Link, useRouter } from 'expo-router';
+import { Link, Stack, useRouter } from 'expo-router';
 import { useContext, useState } from 'react';
-import { View, TextInput, Button, StyleSheet } from 'react-native';
+import { View, TextInput, Button, StyleSheet, Text } from 'react-native';
 import { UserContext } from '../../_layout';
 
 
@@ -43,6 +43,7 @@ const SignIn = () => {
   };
   return (
     <View style={styles.container}>
+      <Stack.Screen options={{headerShown: false}}/>
     <TextInput
       style={styles.input}
       placeholder="Email"
@@ -56,10 +57,15 @@ const SignIn = () => {
       value={password}
       onChangeText={(text) => setPassword(text)}
     />
-    <Button title="Sign In" onPress={handleSignIn} />
-    <Link href="/auth/signUp">
-        click here
-    </Link>
+    <Button style={styles.button} color={"#EA6F6F"} title="Sign In" onPress={handleSignIn} />
+
+    
+
+    <Text style={{backgroundColor:"white", padding:12, flexDirection: 'row', marginTop:12, textAlign: 'center', borderRadius: 3}}>
+      <Text style={{color:"gray", fontSize: 16, fontWeight:'bold' }}> Not yet registered? <Link href= './signUp'>Sign Up</Link> </Text> 
+    </Text>
+             
+    
   </View>
   )
 }
@@ -68,16 +74,21 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
-    alignItems: 'center',
     padding: 16,
   },
   input: {
     width: '100%',
-    height: 40,
-    borderWidth: 1,
+    height: 45,
+    borderWidth: 2,
     marginBottom: 12,
     padding: 10,
+    borderRadius: 3,
+    borderColor : "#EA6F6F"
   },
+
+  button : {
+    borderRadius: 4
+  }
 });
 
 export default SignIn

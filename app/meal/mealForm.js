@@ -23,7 +23,7 @@ const MealForm = () => {
           userName: userName,
           userEmail: userEmail,
           monthName: monthName,
-          mealCount: mealCount
+          mealCount: parseFloat(mealCount)
         }),
       });
 
@@ -48,6 +48,7 @@ const MealForm = () => {
         style={styles.input}
         placeholder="Write todays Meal"
         value={mealCount}
+        keyboardType={'numeric'}
         onChangeText={(text) => setMealCount(text)}
       />
     

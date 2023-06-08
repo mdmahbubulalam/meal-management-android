@@ -1,9 +1,9 @@
 import { SafeAreaView} from 'react-native';
-import SignIn from './auth/signIn';
 import { useContext, useEffect, useState } from 'react';
 import { UserContext } from './_layout';
 import Home from './(tabs)/home';
 import { Redirect } from 'expo-router';
+import SignIn from './auth/signIn';
 
 
 const Welcome = () => {

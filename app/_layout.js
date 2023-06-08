@@ -1,12 +1,20 @@
 import { Stack } from "expo-router"
 import { createContext, useState } from "react"
+import { SafeAreaView } from "react-native";
 
 export const UserContext = createContext();
-const Layout = ({children}) => {
+const Layout = () => {
   const [loggedInUser, setLoggedInUser] = useState({});
   return (
     <UserContext.Provider value={[loggedInUser, setLoggedInUser]}>
-        <Stack>{children}</Stack>
+      
+      <Stack>
+        <Stack.Screen name="(tabs)" options={{headerShown : false}}/>
+      </Stack>
+          
+        
+      
+       
     </UserContext.Provider>
     
   )

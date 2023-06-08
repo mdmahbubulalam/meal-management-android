@@ -31,7 +31,8 @@ const expense = () => {
           userName: user?.username,
           userEmail: user?.email,
           monthName: monthName,
-          expenses: expense
+          expenses: parseFloat(expense)
+          
         }),
       });
 
@@ -55,6 +56,7 @@ const expense = () => {
         style={styles.input}
         placeholder="Write todays expense"
         value={expense}
+        keyboardType={'numeric'}
         onChangeText={(text) => setExpense(text)}
       />
     

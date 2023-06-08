@@ -1,6 +1,6 @@
-import { useRouter } from 'expo-router';
+import { Link, Stack, useRouter } from 'expo-router';
 import { useState } from 'react';
-import { View, TextInput, Button, StyleSheet } from 'react-native';
+import { View, TextInput, Button, StyleSheet, Text } from 'react-native';
 
 
 const SignUp = () => {
@@ -43,6 +43,7 @@ const SignUp = () => {
   };
   return (
     <View style={styles.container}>
+       <Stack.Screen options={{headerShown: false}}/>
       <TextInput
         style={styles.input}
         placeholder="Name"
@@ -62,7 +63,13 @@ const SignUp = () => {
         value={password}
         onChangeText={(text) => setPassword(text)}
       />
-      <Button title="Sign Up" onPress={handleSignUp} />
+      <Button color={"#EA6F6F"} title="Sign Up" onPress={handleSignUp} />
+
+      <Text style={{backgroundColor:"white", marginTop:12, padding:12, flexDirection: 'row', textAlign: 'center', borderRadius: 3}}>
+        <Text style={{color:"gray", fontSize: 16, fontWeight:'bold' }}> Already registered? <Link href='./signIn'>Sign in</Link></Text> 
+      </Text>
+
+      
     </View>
   )
 }
@@ -71,16 +78,21 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
-    alignItems: 'center',
-    padding: 30,
+    padding: 16,
   },
   input: {
     width: '100%',
-    height: 40,
-    borderWidth: 1,
+    height: 45,
+    borderWidth: 2,
     marginBottom: 12,
     padding: 10,
+    borderRadius: 3,
+    borderColor : "#EA6F6F"
   },
+
+  button : {
+    borderRadius: 4
+  }
 });
 
 export default SignUp
