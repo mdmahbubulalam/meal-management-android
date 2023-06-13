@@ -2,10 +2,18 @@ import { Tabs } from "expo-router";
 import { FontAwesome } from '@expo/vector-icons'; 
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Text } from "react-native";
+import { useContext } from "react";
+import { UserContext } from "../_layout";
+import SignIn from "../auth/signIn";
 
 const StackLayout = () => {
+  const [loggedInUser,setLoggedInUser] = useContext(UserContext)
+  const userEmail = loggedInUser.email
   return (
-    <Tabs>
+    <>
+    {
+      userEmail ? 
+      <Tabs>
       <Tabs.Screen 
         name="home" 
         options={{
@@ -27,6 +35,13 @@ const StackLayout = () => {
           tabBarIcon : () => <MaterialCommunityIcons name="logout" size={24} color="black" />
       }}/>
     </Tabs>
+    :
+    <SignIn/>
+
+    }
+    
+    </>
+    
   )
 }
 

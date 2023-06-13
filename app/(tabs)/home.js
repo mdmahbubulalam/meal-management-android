@@ -1,191 +1,112 @@
-import { View, Text, SafeAreaView, ScrollView, StyleSheet } from 'react-native'
+import { View, SafeAreaView, ScrollView, StyleSheet} from 'react-native'
 import React, { useContext, useEffect, useState } from 'react'
 import { UserContext } from '../_layout'
-import { MaterialIcons } from '@expo/vector-icons'; 
+
+import MonthList from '../components/MonthList';
+import Dashboard from '../components/Dashboard';
 
 
 const Home = () => {
+  
   const [loggedInUser] = useContext(UserContext)
   const userEmail = loggedInUser.email;
-
   const [latestMonth, setLatestMonth] = useState([])
-
+  const [allMonth, setAllMonth] = useState([])
   const [meals, setMeals] = useState([]);
-  const [expense, setExpense] = useState([]);
+  const [individualMeals, setIndividualMeals] = useState([]);
+  
+  const monthName = latestMonth.monthName;
+    
     const initialValue = 0;
-    const totalExpense = parseFloat(expense.reduce((accumulator, currentValue) => accumulator + currentValue.expenses, initialValue));
+    const totalExpense = meals.reduce((accumulator, currentValue) => accumulator + currentValue.expense, initialValue);
     const totalMealCount = meals.reduce((accumulator, currentValue) => accumulator + currentValue.mealCount, initialValue);
-    const mealRate = totalExpense/totalMealCount;
+    const singleUserExpense = individualMeals?.reduce((accumulator, currentValue) => accumulator + currentValue.expense, initialValue);
+    const singleUserMealCount = individualMeals?.reduce((accumulator, currentValue) => accumulator + currentValue.mealCount, initialValue);
+    const mealRate = Math.round(totalExpense/totalMealCount);
+    const totalTaka = Math.round(singleUserMealCount * mealRate);
+    const giveOrTake = Math.round(singleUserExpense-totalTaka);
 
-    console.log(totalExpense)
-
-  console.log('email', userEmail)
 
   const url = `https://meal-management-server.onrender.com/api/months/allMonths`
   useEffect(()=>{
     fetch(url)
       .then(res => res.json())
-      .then(data => setLatestMonth(data[0])) 
+      .then(data => setLatestMonth(data[data.length - 1]));
   },[])
 
-  const url2 = `https://meal-management-server.onrender.com/api/meals/allMeals`
   useEffect(()=>{
-    fetch(url2)
+    fetch(url)
       .then(res => res.json())
-      .then(data => setMeals(data)) 
+      .then(data => {
+        data.sort((a,b) => new Date(a) < new Date(b) ? 1 : -1);
+        data.slice(0, 4);
+        setAllMonth(data)
+      });
   },[])
 
-  const url3 = `https://meal-management-server.onrender.com/api/expense/allExpense`
+
+
+
+  const url2 = `https://meal-management-server.onrender.com/api/meals/userMealInfo?email=${userEmail}&monthName=${monthName}`
+    useEffect(()=>{
+        const fetchPost = async () => {
+        const res = await fetch(url2)
+        const data = await res.json();
+        setIndividualMeals(data.meal);
+        }
+        fetchPost();
+    },[userEmail,monthName])
+
+  const url3 = `https://meal-management-server.onrender.com/api/meals/currentMonthMealInfo?monthName=${monthName}`
   useEffect(()=>{
-    fetch(url3)
-      .then(res => res.json())
-      .then(data => setExpense(data)) 
-  },[])
- 
-console.log('sss',userEmail)
+    const fetchPost = async () => {
+      const res = await fetch(url3)
+      const data = await res.json();
+      setMeals(data.meal);
+      }
+      fetchPost();
+  },[monthName])
+
+  
 
   return (
-    <SafeAreaView>
+    <SafeAreaView style={styles.container}>
+      <ScrollView>
+      <View>
+          <Dashboard
+            userEmail={userEmail}
+            latestMonth={latestMonth}
+            totalMealCount={totalMealCount}
+            totalExpense={totalExpense}
+            mealRate={mealRate}
+            singleUserMealCount={singleUserMealCount}
+            singleUserExpense={singleUserExpense}
+            totalTaka={totalTaka}
+            giveOrTake={giveOrTake}
+          />
+          <MonthList
+            allMonth={allMonth}
+            mealRate={mealRate}
+          />
+      </View>
+    </ScrollView>
       
-      <ScrollView >
-        
-         {
-          userEmail && 
-            <View style={styles.container}>
-              <View style={styles.summery}>
-                <View style={{flexDirection:'row', alignItems:'center', paddingBottom: 15}}>
-                  <MaterialIcons name="dashboard" size={24} color="white" />
-                  <Text style={{color:"white", fontSize:25, paddingLeft: 5, fontWeight:'bold'}}>Summery of {latestMonth.monthName}</Text>
-                </View>
-                
-                <View style={{flexDirection:'row', alignItems:'center', paddingBottom: 5}}>
-                  <MaterialIcons name="set-meal" size={24} color="white"/>
-                  <Text style={{color:'white',paddingLeft: 5, fontSize:18, fontWeight:'bold'}}>Total Meal : {totalMealCount}
-                  </Text>
-                </View>
-
-                <View style={{flexDirection:'row', alignItems:'center', paddingBottom: 5}}>
-                  <MaterialIcons name="account-balance" size={24} color="white"/>
-                  <Text style={{color:'white',paddingLeft: 5, fontSize:18, fontWeight:'bold'}}>Total Expense : {totalExpense} Taka</Text>
-                </View>
-
-                <View style={{flexDirection:'row', alignItems:'center', paddingBottom: 5}}>
-                  <MaterialIcons name="rate-review" size={24} color="white"/>
-                  <Text style={{color:'white', paddingLeft: 5, fontSize:18, fontWeight:'bold'}}>Meal Rate: {mealRate}</Text>
-                </View>
-              </View>
-
-              <View style={styles.info}>
-                <Text style={{color:"#FD5A55", fontSize:20, textAlign:'center' , fontWeight:'bold', marginTop:15}}>Meal info</Text>
-                
-                <View style={{borderBottomColor:'#EA6F6F', borderBottomWidth: 1, marginTop:15}}></View>
-                
-                <Text style={{color:"white", fontSize:18, textAlign:'center' , fontWeight:'bold', marginTop:15}}>Mahbubul Alam</Text>
-                <View style={{flexDirection:'row',justifyContent:'center', paddingTop:10, paddingBottom:10}}>
-                  <View style={styles.circle}>
-                    <Text style={{color:'white', alignSelf:'center', fontWeight:'bold', fontSize:18}}>Meal</Text>
-                    <Text style={{ color:'white', alignSelf:'center', fontWeight:'bold', fontSize:18}}>24</Text>
-                  </View>
-                  
-                  <View style={styles.circle}>
-                  <Text style={{color:'white', alignSelf:'center', fontWeight:'bold', fontSize:18}}>Cost</Text>
-                    <Text style={{ color:'white', alignSelf:'center', fontWeight:'bold', fontSize:18}}>2487</Text>
-                  </View>
-                  <View style={styles.circle}>
-                  <Text style={{color:'white', alignSelf:'center', fontWeight:'bold', fontSize:18}}>Taka</Text>
-                    <Text style={{ color:'white', alignSelf:'center', fontWeight:'bold', fontSize:18}}>2400</Text>
-                  </View>
-                  <View style={styles.circle}>
-                  <Text style={{color:'white', alignSelf:'center', fontWeight:'bold', fontSize:18}}>Give</Text>
-                    <Text style={{ color:'white', alignSelf:'center', fontWeight:'bold', fontSize:18}}>1234</Text>
-                  </View>
-                </View>
-
-          
-                
-                <View style={{borderBottomColor:'#EA6F6F', borderBottomWidth: 1, marginTop:15}}></View>
-                
-                <Text style={{color:"white", fontSize:18, textAlign:'center' , fontWeight:'bold', marginTop:15}}>Mahbubul Alam</Text>
-                <View style={{flexDirection:'row',justifyContent:'center', paddingTop:10, paddingBottom:10}}>
-                  <View style={styles.circle}>
-                    <Text style={{color:'white', alignSelf:'center', fontWeight:'bold', fontSize:18}}>Meal</Text>
-                    <Text style={{ color:'white', alignSelf:'center', fontWeight:'bold', fontSize:18}}>24</Text>
-                  </View>
-                  
-                  <View style={styles.circle}>
-                  <Text style={{color:'white', alignSelf:'center', fontWeight:'bold', fontSize:18}}>Cost</Text>
-                    <Text style={{ color:'white', alignSelf:'center', fontWeight:'bold', fontSize:18}}>2487</Text>
-                  </View>
-                  <View style={styles.circle}>
-                  <Text style={{color:'white', alignSelf:'center', fontWeight:'bold', fontSize:18}}>Taka</Text>
-                    <Text style={{ color:'white', alignSelf:'center', fontWeight:'bold', fontSize:18}}>2400</Text>
-                  </View>
-                  <View style={styles.circle}>
-                  <Text style={{color:'white', alignSelf:'center', fontWeight:'bold', fontSize:18}}>Give</Text>
-                    <Text style={{ color:'white', alignSelf:'center', fontWeight:'bold', fontSize:18}}>1234</Text>
-                  </View>
-                </View>
-
-                
-                
-                <View style={{borderBottomColor:'#EA6F6F', borderBottomWidth: 1, marginTop:15}}></View>
-                
-                <Text style={{color:"white", fontSize:18, textAlign:'center' , fontWeight:'bold', marginTop:15}}>Mahbubul Alam</Text>
-                <View style={{flexDirection:'row',justifyContent:'center', paddingTop:10, paddingBottom:10}}>
-                  <View style={styles.circle}>
-                    <Text style={{color:'white', alignSelf:'center', fontWeight:'bold', fontSize:18}}>Meal</Text>
-                    <Text style={{ color:'white', alignSelf:'center', fontWeight:'bold', fontSize:18}}>24</Text>
-                  </View>
-                  
-                  <View style={styles.circle}>
-                  <Text style={{color:'white', alignSelf:'center', fontWeight:'bold', fontSize:18}}>Cost</Text>
-                    <Text style={{ color:'white', alignSelf:'center', fontWeight:'bold', fontSize:18}}>2487</Text>
-                  </View>
-                  <View style={styles.circle}>
-                  <Text style={{color:'white', alignSelf:'center', fontWeight:'bold', fontSize:18}}>Taka</Text>
-                    <Text style={{ color:'white', alignSelf:'center', fontWeight:'bold', fontSize:18}}>2400</Text>
-                  </View>
-                  <View style={styles.circle}>
-                  <Text style={{color:'white', alignSelf:'center', fontWeight:'bold', fontSize:18}}>Give</Text>
-                    <Text style={{ color:'white', alignSelf:'center', fontWeight:'bold', fontSize:18}}>1234</Text>
-                  </View>
-                </View>
-                
-              </View>
-            </View>
-         }
-      </ScrollView>
-    </SafeAreaView>
+  </SafeAreaView>
     
   )
 }
 
 const styles = StyleSheet.create({
+  
   container: {
-    flex:1,
+    flex: 1,
     backgroundColor : "#2F2F2F",
   },
-  summery: {
-    width: '100%',
-    padding: 15,
-    
-  },
-
-
   info: {
     width: '100%',
     backgroundColor : "#1F1F1F",
   },
 
-  circle : {
-    height:90,
-    width:90,
-    borderColor : '#EA6F6F',
-    borderRadius:45,
-    borderWidth:2,
-    margin:2,
-    justifyContent:'center'
-  }
 });
 
 export default Home

@@ -7,14 +7,9 @@ const Layout = () => {
   const [loggedInUser, setLoggedInUser] = useState({});
   return (
     <UserContext.Provider value={[loggedInUser, setLoggedInUser]}>
-      
       <Stack>
         <Stack.Screen name="(tabs)" options={{headerShown : false}}/>
-      </Stack>
-          
-        
-      
-       
+      </Stack> 
     </UserContext.Provider>
     
   )
