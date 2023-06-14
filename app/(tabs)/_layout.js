@@ -29,6 +29,13 @@ const StackLayout = () => {
           tabBarIcon : () => <MaterialCommunityIcons name="calendar-month" size={24} color="black" />
       }}/>
       <Tabs.Screen 
+        name="table" 
+        options={{
+          title : 'Table',
+          headerStyle : {backgroundColor : "#EA6F6F"},
+          tabBarIcon : () => <FontAwesome name="table" size={24} color="black" />
+      }}/>
+      <Tabs.Screen 
         name="logout" 
         options={{
           title : 'Logout',

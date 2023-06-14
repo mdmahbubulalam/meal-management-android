@@ -20,6 +20,20 @@ const MonthList = ({allMonth, mealRate}) => {
           </TouchableOpacity> 
           )
       }
+
+<View style={{borderBottomColor:'#EA6F6F', borderBottomWidth: 1, }}></View>
+      <Text style={{color:"white", fontSize:20, textAlign:'center' , fontWeight:'bold', marginTop:15}}>Monthly Meal Table</Text>
+      {
+        allMonth.map(month =>
+          <TouchableOpacity key={month._id} onPress={() => router.push({ pathname: "../meal/singleMealTable/[singleMealTable].js", params: { monthName: month.monthName, mealRate: mealRate }})} >
+            <View style={{padding:12}}>
+              <Text style={{backgroundColor:"#EA6F6F", padding:12, flexDirection: 'row', textAlign: 'center', borderRadius: 3}}>
+                <Text style={{color:"white", fontSize: 16, fontWeight:'bold' }}>{month.monthName} </Text> 
+              </Text>
+            </View>
+          </TouchableOpacity> 
+          )
+      }
     </View>
   )
 }
