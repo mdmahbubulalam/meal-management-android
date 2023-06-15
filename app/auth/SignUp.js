@@ -12,9 +12,19 @@ const SignUp = () => {
 
   
   const handleSignUp = async () => {
-  
-    console.log(username, email, password)
     const url = `https://meal-management-server.onrender.com/api/auth/signUp`
+    if (!validateEmail(email)) {
+      Alert.alert('Error', 'Invalid email format');
+      return;
+    }
+
+    if (!validatePassword(password)) {
+      Alert.alert(
+        'Error',
+        'Password should be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, and one number'
+      );
+      return;
+    }
     try {
       const response = await fetch(url, {
         method: 'POST',
@@ -41,6 +51,19 @@ const SignUp = () => {
       // Handle any other error that may occur during sign-up
     }
   };
+
+  const validateEmail = (email) => {
+    // Email validation regex pattern
+    const emailPattern = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
+    return emailPattern.test(email);
+  };
+
+  const validatePassword = (password) => {
+    // Password validation regex pattern
+    const passwordPattern = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
+    return passwordPattern.test(password);
+  };
+
   return (
     <View style={styles.container}>
        <Stack.Screen options={{headerShown: false}}/>
@@ -66,7 +89,7 @@ const SignUp = () => {
       <Button color={"#EA6F6F"} title="Sign Up" onPress={handleSignUp} />
 
       <Text style={{backgroundColor:"white", marginTop:12, padding:12, flexDirection: 'row', textAlign: 'center', borderRadius: 3}}>
-        <Text style={{color:"gray", fontSize: 16, fontWeight:'bold' }}> Already registered? <Link href='./signIn'>Sign in</Link></Text> 
+        <Text style={{color:"gray", fontSize: 16, fontWeight:'bold' }}> Already registered? <Text onPress={() => router.push('../auth/SignIn')} style={{color:'#EA6F6F'}}>Sign In</Text></Text> 
       </Text>
 
       

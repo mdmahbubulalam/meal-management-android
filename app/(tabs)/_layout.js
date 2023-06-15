@@ -4,7 +4,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Text } from "react-native";
 import { useContext } from "react";
 import { UserContext } from "../_layout";
-import SignIn from "../auth/signIn";
+import SignIn from "../auth/SignIn";
 
 const StackLayout = () => {
   const [loggedInUser,setLoggedInUser] = useContext(UserContext)
@@ -24,7 +24,7 @@ const StackLayout = () => {
       <Tabs.Screen 
         name="month" 
         options={{
-          title : 'Month',
+          title : 'Add Meal',
           headerStyle : {backgroundColor : "#EA6F6F"},
           tabBarIcon : () => <MaterialCommunityIcons name="calendar-month" size={24} color="black" />
       }}/>

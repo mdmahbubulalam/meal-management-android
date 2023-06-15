@@ -8,7 +8,7 @@ const MonthList = ({allMonth, mealRate}) => {
   return (
     <View style={styles.info}>
       <View style={{borderBottomColor:'#EA6F6F', borderBottomWidth: 1, }}></View>
-      <Text style={{color:"white", fontSize:20, textAlign:'center' , fontWeight:'bold', marginTop:15}}>Monthly Meal Info</Text>
+      <Text style={{color:"white", fontSize:20, textAlign:'center' , fontWeight:'bold', marginTop:15}}>Your Monthly Meal Info</Text>
       {
         allMonth.map(month =>
           <TouchableOpacity key={month._id} onPress={() => router.push({ pathname: "../meal/summery/[summery].js", params: { monthName: month.monthName, mealRate: mealRate }})} >
@@ -21,8 +21,8 @@ const MonthList = ({allMonth, mealRate}) => {
           )
       }
 
-<View style={{borderBottomColor:'#EA6F6F', borderBottomWidth: 1, }}></View>
-      <Text style={{color:"white", fontSize:20, textAlign:'center' , fontWeight:'bold', marginTop:15}}>Monthly Meal Table</Text>
+    <View style={{borderBottomColor:'#EA6F6F', borderBottomWidth: 1, }}></View>
+      <Text style={{color:"white", fontSize:20, textAlign:'center' , fontWeight:'bold', marginTop:15}}>Your Monthly Meal Table</Text>
       {
         allMonth.map(month =>
           <TouchableOpacity key={month._id} onPress={() => router.push({ pathname: "../meal/singleMealTable/[singleMealTable].js", params: { monthName: month.monthName, mealRate: mealRate }})} >

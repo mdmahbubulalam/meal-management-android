@@ -1,37 +1,61 @@
-import { View, Text, SafeAreaView, ScrollView, StyleSheet } from 'react-native';
+import { View, Text, SafeAreaView, ScrollView, StyleSheet, ActivityIndicator } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons'; 
 import React, { useContext, useEffect, useState } from 'react'
 import { Stack, useSearchParams } from 'expo-router';
 import { UserContext } from '../../_layout';
+import SignIn from '../../auth/SignIn';
 
 const Summery = () => {
     const params =useSearchParams();
     const monthName = params.monthName;
-    const mealRate = params.mealRate;
     const [loggedInUser] = useContext(UserContext);
     const userEmail = loggedInUser.email
     const [individualMeals, setIndividualMeals] = useState([]);
+    const [loading, setLoading] = useState(false);
+    const [meals, setMeals] = useState([]);
+
+    const initialValue = 0;
+    const totalExpense = meals.reduce((accumulator, currentValue) => accumulator + currentValue.expense, initialValue);
+    const totalMealCount = meals.reduce((accumulator, currentValue) => accumulator + currentValue.mealCount, initialValue);
+    const singleUserExpense = individualMeals?.reduce((accumulator, currentValue) => accumulator + currentValue.expense, initialValue);
+    const singleUserMealCount = individualMeals?.reduce((accumulator, currentValue) => accumulator + currentValue.mealCount, initialValue);
+    const mealRate = Math.round(totalExpense/totalMealCount);
+    const totalTaka = Math.round(singleUserMealCount * mealRate);
+    const giveOrTake = Math.round(singleUserExpense-totalTaka);
+
     const url = `https://meal-management-server.onrender.com/api/meals/userMealInfo?email=${userEmail}&monthName=${monthName}`
     useEffect(()=>{
-        const fetchPost = async () => {
+      setLoading(true);
+      const fetchPost = async () => {
         const res = await fetch(url)
         const data = await res.json();
         setIndividualMeals(data.meal);
-        }
-        fetchPost();
+        setLoading(false)
+      }
+      fetchPost();
     },[userEmail,monthName])
 
+    const url2 = `https://meal-management-server.onrender.com/api/meals/currentMonthMealInfo?monthName=${monthName}`
+    useEffect(()=>{
+      setLoading(true);
+      const fetchPost = async () => {
+        const res = await fetch(url2)
+        const data = await res.json();
+        setMeals(data.meal);
+        setLoading(false)
+      }
+      fetchPost();
+    },[monthName])
     
-    const initialValue = 0;
-    const singleUserExpense = individualMeals?.reduce((accumulator, currentValue) => accumulator + currentValue.expense, initialValue);
-    const singleUserMealCount = individualMeals?.reduce((accumulator, currentValue) => accumulator + currentValue.mealCount, initialValue);
-    const totalTaka = singleUserMealCount * mealRate;
-    const giveOrTake = singleUserExpense-totalTaka;
+   
 
    
 
   return (
     <SafeAreaView style={styles.container}>
+      {
+        !userEmail && <SignIn/>
+      }
        <Stack.Screen
          options={{
           headerStyle : {backgroundColor : "#EA6F6F"},
@@ -39,8 +63,36 @@ const Summery = () => {
       }}
       />
         {
+          loading ?
+            <ActivityIndicator  size='large' color='#EA6F6F' />
+
+          :
             userEmail &&
             <View style={styles.info}>
+              <View style={styles.summery}>
+               <View style={{flexDirection:'row', alignItems:'center', paddingBottom: 15}}>
+                 <MaterialIcons name="dashboard" size={24} color="white" />
+                 <Text style={{color:"white", fontSize:25, paddingLeft: 5, fontWeight:'bold'}}>Summery of  {monthName}</Text>
+               </View>
+               
+               <View style={{flexDirection:'row', alignItems:'center', paddingBottom: 5}}>
+                 <MaterialIcons name="set-meal" size={24} color="white"/>
+                 <Text style={{color:'white',paddingLeft: 5, fontSize:18, fontWeight:'bold'}}>Total Meal : {totalMealCount}
+                 </Text>
+               </View>
+
+               <View style={{flexDirection:'row', alignItems:'center', paddingBottom: 5}}>
+                 <MaterialIcons name="account-balance" size={24} color="white"/>
+                 <Text style={{color:'white',paddingLeft: 5, fontSize:18, fontWeight:'bold'}}>Total Expense : {totalExpense} Taka</Text>
+               </View>
+
+               <View style={{flexDirection:'row', alignItems:'center', paddingBottom: 5}}>
+                 <MaterialIcons name="rate-review" size={24} color="white"/>
+                 <Text style={{color:'white', paddingLeft: 5, fontSize:18, fontWeight:'bold'}}>Meal Rate: {mealRate}</Text>
+               </View>
+             </View>
+             <View style={{borderBottomColor:'#EA6F6F', borderBottomWidth: 1, }}></View>
+
              <Text style={{color:"white", fontSize:20, textAlign:'center' , fontWeight:'bold', marginTop:15}}>Your Meal info of {monthName}</Text>
                <View style={{borderBottomColor:'#EA6F6F', borderBottomWidth: 1, marginTop:15}}></View>
                <Text style={{color:"white", fontSize:18, textAlign:'center' , fontWeight:'bold'}}></Text>
@@ -77,13 +129,18 @@ const styles = StyleSheet.create({
     container: {
       flex:1,
       backgroundColor : "#2F2F2F",
-      justifyContent: 'center',
     },
   
   
     info: {
       width: '100%',
       backgroundColor : "#1F1F1F",
+    },
+
+    summery: {
+      width: '100%',
+      padding: 15,
+      backgroundColor : "#2F2F2F",
     },
   
     circle : {
