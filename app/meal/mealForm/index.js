@@ -22,7 +22,6 @@ const MealForm = () => {
     const [expense, setExpense] = useState(0)
     const [selectedDate, setSelectedDate] = useState("")
 
-    console.log(selectedDate)
 
     const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
 

@@ -19,7 +19,7 @@ const Summery = () => {
     const totalMealCount = meals.reduce((accumulator, currentValue) => accumulator + currentValue.mealCount, initialValue);
     const singleUserExpense = individualMeals?.reduce((accumulator, currentValue) => accumulator + currentValue.expense, initialValue);
     const singleUserMealCount = individualMeals?.reduce((accumulator, currentValue) => accumulator + currentValue.mealCount, initialValue);
-    const mealRate = Math.round(totalExpense/totalMealCount);
+    const mealRate = totalExpense/totalMealCount;
     const totalTaka = Math.round(singleUserMealCount * mealRate);
     const giveOrTake = Math.round(singleUserExpense-totalTaka);
 

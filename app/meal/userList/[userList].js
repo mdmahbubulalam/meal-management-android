@@ -11,7 +11,6 @@ const UserList = () => {
   const [loggedInUser] = useContext(UserContext);
   const params =useSearchParams();
   const monthName = params.monthName;
-  console.log(monthName)
   const [allUsers, setAllUsers] = useState([])
   const [loading, setLoading] = useState(false);
   const [singleUser, setSingleUser] = useState([])

@@ -15,6 +15,11 @@ const MealTable = () => {
    
     const latestMonthName = latestMonth.monthName;
 
+    const initialValue = 0;
+
+    const totalExpense = meals.reduce((accumulator, currentValue) => accumulator + currentValue.expense, initialValue);
+  const totalMealCount = meals.reduce((accumulator, currentValue) => accumulator + currentValue.mealCount, initialValue);
+
     const url = `https://meal-management-server.onrender.com/api/months/allMonths`
   useEffect(()=>{
     setLoading(true)
@@ -56,6 +61,8 @@ const MealTable = () => {
 
           <ScrollView>
             <Text style={{color:"white", fontSize:20, textAlign:'center' , fontWeight:'bold', marginBottom:5}}>Meal Table of {latestMonthName}</Text>
+            <Text style={{color:"white", fontSize:20, textAlign:'center' , fontWeight:'bold', marginBottom:5}}>Total Expense - {totalExpense}</Text>
+            <Text style={{color:"white", fontSize:20, textAlign:'center' , fontWeight:'bold', marginBottom:5}}>Total Meal - {totalMealCount}</Text>
             
             <Table borderStyle={{borderWidth:1, borderColor:'#EA6F6F'}} >
               <Row data={headerData} style={[styles.head , { fontWeight: 'bold'}] } textStyle={styles.text}/>
