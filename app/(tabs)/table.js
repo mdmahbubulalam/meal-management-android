@@ -61,8 +61,8 @@ const MealTable = () => {
 
           <ScrollView>
             <Text style={{color:"white", fontSize:20, textAlign:'center' , fontWeight:'bold', marginBottom:5}}>Meal Table of {latestMonthName}</Text>
-            <Text style={{color:"white", fontSize:20, textAlign:'center' , fontWeight:'bold', marginBottom:5}}>Total Expense - {totalExpense}</Text>
-            <Text style={{color:"white", fontSize:20, textAlign:'center' , fontWeight:'bold', marginBottom:5}}>Total Meal - {totalMealCount}</Text>
+            <Text style={{color:"white", fontSize:16, textAlign:'center' , fontWeight:'bold', marginBottom:5}}>Total Expense = {totalExpense}</Text>
+            <Text style={{color:"white", fontSize:16, textAlign:'center' , fontWeight:'bold', marginBottom:5}}>Total Meal = {totalMealCount}</Text>
             
             <Table borderStyle={{borderWidth:1, borderColor:'#EA6F6F'}} >
               <Row data={headerData} style={[styles.head , { fontWeight: 'bold'}] } textStyle={styles.text}/>

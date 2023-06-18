@@ -2,6 +2,7 @@ import { Link, Stack, useRouter } from 'expo-router';
 import { useContext, useState } from 'react';
 import { View, TextInput, Button, StyleSheet, Text, Alert, TouchableOpacity } from 'react-native';
 import { UserContext } from '../_layout';
+import { ActivityIndicator } from 'react-native';
 
 
 const SignIn = () => {
@@ -9,6 +10,7 @@ const SignIn = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loggedInUser, setLoggedInUser] = useContext(UserContext);
+  const [loading, setLoading] = useState(false);
 
   const handleSignIn = async () => {
     const url = `https://meal-management-server.onrender.com/api/auth/signIn`
@@ -18,6 +20,7 @@ const SignIn = () => {
       return;
     }
     try {
+      setLoading(true)
       const response = await fetch(url, {
         method: 'POST',
         headers: {
@@ -35,10 +38,12 @@ const SignIn = () => {
         }
         setLoggedInUser(userEmail)
         console.log('User signed in successfully!');
+        setLoading(false)
         router.push(`/home`);
         // Additional actions after successful sign-in, such as navigating to another screen
       } else {
         console.log('Sign-in failed.');
+        setLoading(false)
         Alert.alert('Error', 'Wrong email or password');
         // Handle sign-in failure, such as displaying an error message
       }
@@ -52,29 +57,30 @@ const SignIn = () => {
   return (
     <View style={styles.container}>
       <Stack.Screen options={{headerShown: false}}/>
-    <TextInput
-      style={styles.input}
-      placeholder="Email"
-      value={email}
-      onChangeText={(text) => setEmail(text)}
-    />
-    <TextInput
-      style={styles.input}
-      placeholder="Password"
-      secureTextEntry={true}
-      value={password}
-      onChangeText={(text) => setPassword(text)}
-    />
-    <Button style={styles.button} color={"#EA6F6F"} title="Sign In" onPress={handleSignIn} />
 
-    
-
-    <Text style={{backgroundColor:"white", padding:12, flexDirection: 'row', marginTop:12, textAlign: 'center', borderRadius: 3}}>
-      <Text style={{color:"gray", fontSize: 16, fontWeight:'bold' }}> Not yet registered? <Text onPress={() => router.push('../auth/SignUp')} style={{color:'#EA6F6F'}}>Sign Up</Text> </Text>
-    </Text>
-             
-    
-  </View>
+      <View>
+        {
+          loading && <ActivityIndicator styles={{paddingTop : 10}} size='large' color='#EA6F6F' />
+        }
+        <TextInput
+          style={styles.input}
+          placeholder="Email"
+          value={email}
+          onChangeText={(text) => setEmail(text)}
+        />
+        <TextInput
+          style={styles.input}
+          placeholder="Password"
+          secureTextEntry={true}
+          value={password}
+          onChangeText={(text) => setPassword(text)}
+        />
+        <Button style={styles.button} color={"#EA6F6F"} title="Sign In" onPress={handleSignIn} />
+        <Text style={{backgroundColor:"white", padding:12, flexDirection: 'row', marginTop:12, textAlign: 'center', borderRadius: 3}}>
+          <Text style={{color:"gray", fontSize: 16, fontWeight:'bold' }}> Not yet registered? <Text onPress={() => router.push('../auth/SignUp')} style={{color:'#EA6F6F'}}>Sign Up</Text> </Text>
+        </Text>
+      </View>
+    </View>
   )
 }
 

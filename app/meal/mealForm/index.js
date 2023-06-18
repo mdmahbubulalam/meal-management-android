@@ -16,11 +16,12 @@ const MealForm = () => {
     const singleUserEmail = params.singleUserEmail;
 
     const [loggedInUser] = useContext(UserContext)
-  const loggedInUserEmail = loggedInUser.email;
+    const loggedInUserEmail = loggedInUser.email;
 
     const [mealCount, setMealCount] = useState(0)
     const [expense, setExpense] = useState(0)
     const [selectedDate, setSelectedDate] = useState("")
+    
 
 
     const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
@@ -104,7 +105,7 @@ const MealForm = () => {
             <TextInput
               style={styles.input}
               placeholder="Write todays total bazar cost"
-              value={expense}
+              value={parseFloat(expense)}
               keyboardType={'numeric'}
               onChangeText={(text) => setExpense(text)}
             />
@@ -113,7 +114,7 @@ const MealForm = () => {
         <TextInput
           style={styles.input}
           placeholder="Write todays meal"
-          value={mealCount}
+          value={parseFloat(expense)}
           keyboardType={'numeric'}
           onChangeText={(text) => setMealCount(text)}
         />

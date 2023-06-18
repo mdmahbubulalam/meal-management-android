@@ -4,8 +4,8 @@
     "web": {
       "bundler": "metro"
     },
-    "name": "meal_management_client_android",
-    "slug": "meal_management_client_android",
+    "name": "meal_management",
+    "slug": "meal_management",
     "extra": {
       "eas": {
         "projectId": "af8e29c6-d1ed-4802-95ac-37e407568e8f"

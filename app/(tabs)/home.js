@@ -68,7 +68,7 @@ const Home = () => {
         setIndividualMeals(data.meal);
         setLoading(false)
       }
-        fetchPost();
+      fetchPost()
     },[userEmail,monthName])
 
   const url3 = `https://meal-management-server.onrender.com/api/meals/currentMonthMealInfo?monthName=${monthName}`
@@ -80,7 +80,7 @@ const Home = () => {
       setMeals(data.meal);
       setLoading(false)
     }
-    fetchPost();
+    fetchPost()
   },[monthName])
 
   
