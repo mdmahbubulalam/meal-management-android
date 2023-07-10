@@ -1,4 +1,4 @@
-import {  ActivityIndicator, SafeAreaView, ScrollView, StyleSheet, Text, View} from 'react-native'
+import {  ActivityIndicator, Alert, Button, SafeAreaView, ScrollView, StyleSheet, Text, View} from 'react-native'
 import React, {useContext, useEffect, useState } from 'react'
 import {} from 'react-native';
 
@@ -6,6 +6,7 @@ import { Table, TableWrapper, Row,  Cell } from 'react-native-table-component';
 import { Stack, useSearchParams } from 'expo-router';
 import { UserContext } from '../../_layout';
 import SignIn from '../../auth/SignIn';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 
 const SingleMealTable = () => {
@@ -19,6 +20,14 @@ const SingleMealTable = () => {
   const [latestMonth, setLatestMonth] = useState([])
 
   const headerData = ["Date", "Name","Expense", "Meal Count"]
+
+  const element = (data, index) => (
+    <TouchableOpacity onPress={() => alertIndex(index)}>
+      <View style={styles.btn}>
+        <Text style={styles.btnText}>button</Text>
+      </View>
+    </TouchableOpacity>
+  );
 
   const initialValue = 0
    
@@ -48,6 +57,8 @@ const SingleMealTable = () => {
       }
         fetchPost();
     },[userEmail,monthName])
+
+
 
 
   
@@ -85,11 +96,12 @@ const SingleMealTable = () => {
                 {
                     
                   meals.map((meal) => (
-                    <TableWrapper key={meal._id} style={styles.row}>
-                        <Cell data={meal.date} textStyle={styles.text} />
+                    <TableWrapper key={meal._id} style={styles.row} >
+                        <Cell data={meal.date} textStyle={styles.text}/>
                         <Cell data={meal.userName} textStyle={styles.text}/>
-                        <Cell data={meal.expense} textStyle={styles.text}/>
-                        <Cell data={meal.mealCount} textStyle={styles.text}/>
+                        <Cell data={meal.expense} textStyle={styles.text} />
+                        <Cell data={meal.mealCount} textStyle={styles.text} />
+                        
                     </TableWrapper>
                     
                   ))
@@ -114,6 +126,8 @@ const styles = StyleSheet.create({
     head: { height: 40, backgroundColor: '#537791' },
     text: { margin: 6, textAlign:'center', color: 'white', fontSize:15,fontWeight: '500' },
     row: { flexDirection: 'row', backgroundColor: '#1F1F1F'},
+    btn: { width: 58, height: 18, marginLeft: 15, backgroundColor: '#c8e1ff', borderRadius: 2 },
+  btnText: { textAlign: 'center' }
   });
 
 export default SingleMealTable;
